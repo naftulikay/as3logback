@@ -5,24 +5,24 @@ package ch.qos.logback.classic.utilities {
 	 */
 	public class SimpleDateFormat extends EventDispatcher {
 		
-		internal static const DAYS_OF_WEEK_ABBREVIATED:Vector.<String> = new Vector.<String>(
+		internal static const DAYS_OF_WEEK_ABBREVIATED:Array = [
 			"Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"
-		);
+		];
 		
-		internal static const DAYS_OF_WEEK_FULL:Vector.<String> = new Vector.<String>(
+		internal static const DAYS_OF_WEEK_FULL:Array = [
 			"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
 			"Saturday"
-		);
+		];
 		
-		internal static const MONTH_NAMES_ABBREVIATED:Vector.<String> = new Vector.<String>(
+		internal static const MONTH_NAMES_ABBREVIATED:Array = [
 			"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct",
 			"Nov", "Dec"
-		);
+		];
 		
-		internal static const MONTH_NAMES_FULL:Vector.<String> = new Vector.<String>(
+		internal static const MONTH_NAMES_FULL:Array = [
 			"January", "February", "March", "April", "May", "June", "July",
 			"August", "September", "October", "November", "December"
-		);
+		];
 		
 		public static const AM:String = "AM";
 		
@@ -50,7 +50,7 @@ package ch.qos.logback.classic.utilities {
 		
 		internal static const secondOfMinuteExpression:RegExp = new RegExp("(s{1,2})");
 		
-		internal static const millisecondExpression:RegExp = new RegExp("(M{1,3})");
+		internal static const millisecondExpression:RegExp = new RegExp("(S{1,3})");
 		
 		private var _pattern:String;
 		
@@ -291,7 +291,7 @@ package ch.qos.logback.classic.utilities {
 			if (size == 3)
 				result = zeroPad(value.milliseconds, 3);
 			
-			return null;
+			return result;
 		}
 		
 		internal function zeroPad(value:Number, minimumDigits:Number):String {

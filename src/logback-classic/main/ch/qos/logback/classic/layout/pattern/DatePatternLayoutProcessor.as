@@ -18,7 +18,7 @@ package ch.qos.logback.classic.layout.pattern {
 			
 			var matchGroups:Object = this.expression.exec(pattern);
 			var paddingParameters:String = matchGroups[1];
-			var datePattern:String = matchGroups[1];
+			var datePattern:String = matchGroups[2];
 			
 //			first, evaluate the date
 			if (datePattern == null || datePattern == "" || datePattern == "ISO8601") 
