@@ -4,6 +4,20 @@ package ch.qos.logback.classic.utilities {
 	 * @author TK Kocheran <a href="mailto:rfkrocktk@gmail.com">&lt;rfkrocktk@gmail.com&gt;</a>
 	 */
 	public class SimpleDateFormat extends EventDispatcher {
+//		FIXME This implementation is ridiculous and slow. Find. A. Better. Way.
+// 		Like, here's an idea:
+//
+//			Split the string into an array of word-characters and non-word-characters:
+//				['yyyy', '-', 'MM', '-', 'dd']
+//
+//			Loop through the array, testing each item for whether it's a word or non-word:
+//				for each (var item:String in items) {
+//					if (new RegExp("\\w").test(item)) {
+//						...
+//					}
+//				}
+//			
+//			If it's a word, run a replace with an incrementing index, to prevent backwards messups.
 		
 		internal static const DAYS_OF_WEEK_ABBREVIATED:Array = [
 			"Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"
@@ -28,29 +42,43 @@ package ch.qos.logback.classic.utilities {
 		
 		public static const PM:String = "PM";
 		
-		internal static const yearExpression:RegExp = new RegExp("(?<!y)(y{2}|y{4})(?!y)");
+		internal static const yearExpression:RegExp = new RegExp("(?<!\\{)(y{4}|y{2})(?!\\})");
 		
-		internal static const monthExpression:RegExp = new RegExp("(?<!M)(M{1,4})(?!M)");
+		internal static const yearTokenExpression:RegExp = new RegExp("\\{(y{4}|y{2})\\}");
 		
-		internal static const dayOfMonthExpression:RegExp = new RegExp("(?<!d)(d{1,2})(?!d)");
+		internal static const monthExpression:RegExp = new RegExp("(?<!\\{)(M{1,4})(?!\\})");
 		
-		internal static const dayOfWeekExpression:RegExp = new RegExp("(?<!E)(E{1,4})(?!E)");
+		internal static const monthTokenExpression:RegExp = new RegExp("\\{(M{1,4})\\}");
 		
-		internal static const ampmExpression:RegExp = new RegExp("(a{1,2})");
+		internal static const dayOfMonthExpression:RegExp = new RegExp("(?<!\\{)(d{1,2})(?!\\})");
+				internal static const dayOfMonthTokenExpression:RegExp = new RegExp("\\{(d{1,2})\\}");
 		
-		internal static const hourOfDayExpression0:RegExp = new RegExp("(H{1,2})"); // 0-23 
+		internal static const dayOfWeekExpression:RegExp = new RegExp("(?<!\\{)(E{1,4})(?!\\})");
+				internal static const dayOfWeekTokenExpression:RegExp = new RegExp("\\{(E{1,4})\\}");
 		
-		internal static const hourOfDayExpression1:RegExp = new RegExp("(k{1,2})"); // 1-24
+		internal static const ampmExpression:RegExp = new RegExp("(?<!\\{)(a{1,2})(?!\})");
+				internal static const ampmTokenExpression:RegExp = new RegExp("\\{(a{1,2})\\}");
 		
-		internal static const hourOfDayExpression2:RegExp = new RegExp("(K{1,2})"); // 0-11, ampm 
+		internal static const hourOfDayExpression0:RegExp = new RegExp("(?<!\\{)(H{1,2})(?!\})"); // 0-23 
+				internal static const hourOfDayTokenExpression0:RegExp = new RegExp("\\{(H{1,2})\\}"); // 0-23 
 		
-		internal static const hourOfDayExpression3:RegExp = new RegExp("(h{1,2})"); // 1-12, ampm
+		internal static const hourOfDayExpression1:RegExp = new RegExp("(?<!\\{)(k{1,2})(?!\})"); // 1-24
+				internal static const hourOfDayTokenExpression1:RegExp = new RegExp("\\{(k{1,2})\\}"); // 1-24
 		
-		internal static const minuteOfHourExpression:RegExp = new RegExp("(m{1,2})");
+		internal static const hourOfDayExpression2:RegExp = new RegExp("(?<!\\{)(K{1,2})(?!\})"); // 0-11, ampm 		
+		internal static const hourOfDayTokenExpression2:RegExp = new RegExp("\\{(K{1,2})\\}"); // 0-11, ampm 
 		
-		internal static const secondOfMinuteExpression:RegExp = new RegExp("(s{1,2})");
+		internal static const hourOfDayExpression3:RegExp = new RegExp("(?<!\\{)(h{1,2})(?!\})"); // 1-12, ampm
+				internal static const hourOfDayTokenExpression3:RegExp = new RegExp("\\{(h{1,2})\\}"); // 1-12, ampm
 		
-		internal static const millisecondExpression:RegExp = new RegExp("(S{1,3})");
+		internal static const minuteOfHourExpression:RegExp = new RegExp("(?<!\\{)(m{1,2})(?!\})");
+				internal static const minuteOfHourTokenExpression:RegExp = new RegExp("\\{(m{1,2})\\}");
+		
+		internal static const secondOfMinuteExpression:RegExp = new RegExp("(?<!\\{)(s{1,2})(?!\})");		
+		internal static const secondOfMinuteTokenExpression:RegExp = new RegExp("\\{(s{1,2})\\}");
+		
+		internal static const millisecondExpression:RegExp = new RegExp("(?<!\\{)(S{1,3})(?!\})");
+				internal static const millisecondTokenExpression:RegExp = new RegExp("\\{(S{1,3})\\}");
 		
 		private var _pattern:String;
 		
@@ -65,6 +93,8 @@ package ch.qos.logback.classic.utilities {
 		public function format(date:Date):String {
 			var result:String = this.pattern;
 			
+//			result = this.tokenize(result);
+			
 			result = this.apply(result, yearExpression, date); // years
 			result = this.apply(result, monthExpression, date); // months
 			result = this.apply(result, dayOfMonthExpression, date); // date
@@ -77,6 +107,71 @@ package ch.qos.logback.classic.utilities {
 			result = this.apply(result, minuteOfHourExpression, date); // minute of hour
 			result = this.apply(result, secondOfMinuteExpression, date); // second of minute
 			result = this.apply(result, millisecondExpression, date); // milliseconds
+			
+			return result;
+		}
+		
+		internal function tokenize(input:String):String {
+			var result:String = input;
+			var searchers:Array = [yearExpression, monthExpression, dayOfMonthExpression, dayOfWeekExpression,
+				ampmExpression, hourOfDayExpression0, hourOfDayExpression1, hourOfDayExpression2, 
+				hourOfDayExpression3, minuteOfHourExpression, secondOfMinuteExpression, millisecondExpression];
+			
+			for each (var searcher:RegExp in searchers) {
+				while (searcher.test(result)) {
+					var matchGroups:Object = searcher.exec(result);
+					
+					switch (searcher) {
+						case yearExpression:
+							result = result.replace(yearExpression, "{" + matchGroups[1] + "}");
+							break;
+						
+						case monthExpression:
+							result = result.replace(monthExpression, "{" + matchGroups[1] + "}");
+							break;
+							
+						case dayOfMonthExpression:
+							result = result.replace(dayOfMonthExpression, "{" + matchGroups[1] + "}");
+							break;
+							
+						case dayOfWeekExpression:
+							result = result.replace(dayOfWeekExpression, "{" + matchGroups[1] + "}");
+							break;
+							
+						case ampmExpression:
+							result = result.replace(ampmExpression, "{a}");
+							break;
+							
+						case hourOfDayExpression0:
+							result = result.replace(hourOfDayExpression0, "{" + matchGroups[1] + "}");
+							break;
+							
+						case hourOfDayExpression1:
+							result = result.replace(hourOfDayExpression1, "{" + matchGroups[1] + "}");
+							break;
+							
+						case hourOfDayExpression2:
+							result = result.replace(hourOfDayExpression2, "{" + matchGroups[1] + "}");
+							break;
+							
+						case hourOfDayExpression3:
+							result = result.replace(hourOfDayExpression3, "{" + matchGroups[1] + "}");
+							break;
+							
+						case minuteOfHourExpression:
+							result = result.replace(minuteOfHourExpression, "{" + matchGroups[1] + "}");
+							break;
+							
+						case secondOfMinuteExpression:
+							result = result.replace(secondOfMinuteExpression, "{" + matchGroups[1] + "}");
+							break;
+						
+						case millisecondExpression:
+							result = result.replace(millisecondExpression, "{" + matchGroups[1] + "}");
+							break;
+					}
+				}
+			}
 			
 			return result;
 		}
@@ -149,7 +244,7 @@ package ch.qos.logback.classic.utilities {
 			}
 			
 			if (result.length > size) {
-				result = result.substr((result.length - 1) - size);
+				result = result.substr(result.length - size);
 			}
 			
 			return result;
@@ -246,11 +341,15 @@ package ch.qos.logback.classic.utilities {
 		internal function getHourOfDay3(value:Date, size:int):String {
 			var result:String = null;
 			
-			if (size == 1)
-				result = int((value.hours + 1) > 12 ? (value.hours + 1) - 12 : value.hours + 1).toString();
-			
-			if (size == 2)
-				result = zeroPad((value.hours + 1) > 12 ? (value.hours + 1) - 12 : value.hours + 1, 2);
+			if (value.hours == 0 || value.hours == 12) {
+				result = "12";
+			} else {
+				if (size == 1) 
+					result = int(value.hours > 12 ? value.hours - 12 : value.hours).toString();
+				
+				if (size == 2)
+					result = zeroPad(value.hours > 12 ? value.hours - 12 : value.hours, 2);
+			}
 			
 			return result;
 		}
@@ -306,7 +405,7 @@ package ch.qos.logback.classic.utilities {
 		internal function getDigits(value:Number):int {
 			var currentPower:uint = 1;
 			
-			while (value > Math.pow(10, currentPower)) {
+			while (value >= Math.pow(10, currentPower)) {
 				currentPower++;
 			}
 			
