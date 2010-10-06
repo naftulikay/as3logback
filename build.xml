@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<project name="logback" basedir="." default="help">
+	
+	<property file="local.properties"/>
+	<property file="build.properties"/>
+	
+	<target name="help">
+
+	</target>
+
+	<target name="setup">
+
+	</target>
+
+	<target name="setup.main" depends="setup">
+		<taskdef classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"
+			resource="flexTasks.tasks"/>
+	</target>
+
+	<target name="setup.test" depends="setup.main">
+		<taskdef classpath="${flexunit.jar.file}"
+			resource="flexUnitTasks.tasks"/>
+		
+		<mkdir dir="${junit.logback-classic.bin.dir}"/>
+	</target>
+	
+	<target name="compile.logback-classic.test" depends="setup.test">
+		<mxmlc file="${test.logback-classic.src.file}" output="${test.logback-classic.bin.file}"
+				debug="true" incremental="true" maxmemory="256m" fork="true">
+			<default-size width="800" height="600"/>
+			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+			<source-path path-element="${main.logback-core.src.dir}"/>
+			<source-path path-element="${main.logback-classic.src.dir}"/>
+			<source-path path-element="${test.logback-classic.src.dir}"/>
+			<compiler.library-path dir="${main.logback-core.lib.dir}" append="true" includes="*.swc"/>
+			<compiler.library-path dir="${test.logback-core.lib.dir}" append="true" includes="*.swc"/>
+			<compiler.library-path dir="${main.logback-classic.lib.dir}" append="true" includes="*.swc"/>
+			<compiler.library-path dir="${test.logback-classic.lib.dir}" append="true" includes="*.swc"/>
+			<static-link-runtime-shared-libraries>true</static-link-runtime-shared-libraries>
+		</mxmlc>
+	</target>
+	
+	<target name="unittest.logback-classic" depends="compile.logback-classic.test">
+		<flexunit swf="${test.logback-classic.bin.file}"
+			haltonfailure="true" verbose="false" localtrusted="true"
+			headless="false" todir="${junit.logback-classic.bin.dir}"/>
+		
+		<junitreport todir="${junit.logback-classic.bin.dir}">
+			<fileset dir="${junit.logback-classic.bin.dir}" includes="**/*TEST-*.xml"/>
+			<report format="frames" todir="${reports.logback-classic.bin.dir}"/>
+		</junitreport>
+	</target>
+</project>
