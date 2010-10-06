@@ -1,4 +1,5 @@
 package ch.qos.logback.classic.layout.pattern {
+	
 	/**
 	 * @author TK Kocheran <a href="mailto:rfkrocktk@gmail.com">&lt;rfkrocktk@gmail.com&gt;</a>
 	 */
@@ -6,6 +7,8 @@ package ch.qos.logback.classic.layout.pattern {
 	public class PatternTestSuite {
 		
 		public var abstractPatternLayoutProcessorTestCase:AbstractPatternLayoutProcessorTestCase;
+		
+		public var datePatternLayoutProcessorTestCase:DatePatternLayoutProcessorTestCase;
 		
 		public var formattingPatternLayoutProcessorTestCase:FormattingPatternLayoutProcessorTestCase;
 		

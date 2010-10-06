@@ -29,6 +29,10 @@ package ch.qos.logback.classic.layout.pattern {
 		}
 		
 		public function shrink(value:String, maxChars:Number):String {
+//			if there's no need to shrink, just return the value straight up.
+			if (value.length < maxChars)
+				return value;
+			
 			var parts:Array = value.split(".");
 			
 			var result:String = "";
@@ -36,21 +40,29 @@ package ch.qos.logback.classic.layout.pattern {
 			var calculatedLength:int = value.length;
 			
 			if (value.length > maxChars) {
-				
+//				if the logger name is longer than the max characters allowed, shrink it
 				for each (var part:String in parts) {
+					var index:int = parts.indexOf(part);
+					
 					if (calculatedLength > maxChars) {
-						var index:int = parts.indexOf(part);
-						
+//						if the calculated size of the result is greater than the max characters allowed				
 						if (index != parts.length - 1) {
-//							we're not at the end yet, so we'll trim if need be.
+//							we're not at the end yet, so we'll trim if need be, appending a period
 							result += part.charAt(0) + ".";
 							calculatedLength -= (part.length - 1);
 						} else {
-//							we're at the end, so append it as is.
+//							we're at the end, so append it as is
 							result += part;
 						}
 					} else {
-						break;
+//						if the calculated size of the result is less than or equal to the max characters allowed
+						if (index != parts.length - 1) {
+//							we're not at the end, so insert the part and a postfixed period
+							result += part + ".";
+						} else {
+//							we're at the end, so just append the part
+							result += part;
+						}
 					}
 				}
 			}

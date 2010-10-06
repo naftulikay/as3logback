@@ -37,7 +37,7 @@ package ch.qos.logback.classic.entry {
 		
 		public function readExternal(value:IDataInput):void {
 			this.loggerName = value.readUTF();
-			this.time = Date(value.readObject());
+			this.time = value.readObject() as Date;
 			this.level = Level(value.readObject());
 			this.rawMessage = value.readUTF();
 			this.parameters = Vector.<Object>(value.readObject());

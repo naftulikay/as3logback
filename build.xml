@@ -45,9 +45,9 @@
 			haltonfailure="true" verbose="false" localtrusted="true"
 			headless="false" todir="${junit.logback-classic.bin.dir}"/>
 		
-		<junitreport todir="${junit.logback-classic.bin.dir}">
+		<!--<junitreport todir="${junit.logback-classic.bin.dir}">
 			<fileset dir="${junit.logback-classic.bin.dir}" includes="**/*TEST-*.xml"/>
 			<report format="frames" todir="${reports.logback-classic.bin.dir}"/>
-		</junitreport>
+		</junitreport>-->
 	</target>
 </project>

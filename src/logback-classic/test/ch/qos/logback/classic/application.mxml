@@ -9,6 +9,7 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import ch.qos.logback.classic.utilities.UtilitiesTestSuite;
 			import ch.qos.logback.classic.format.FormatTestSuite;
 			import ch.qos.logback.classic.layout.pattern.PatternTestSuite;
 			import org.flexunit.runner.notification.async.XMLListener;
@@ -18,7 +19,8 @@
 			
 			private static const TESTS:Array = [
 				FormatTestSuite,
-				PatternTestSuite
+				PatternTestSuite,
+				UtilitiesTestSuite
 			];
 			
 			private var core:FlexUnitCore;

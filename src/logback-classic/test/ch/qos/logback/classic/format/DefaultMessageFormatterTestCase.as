@@ -12,6 +12,7 @@ package ch.qos.logback.classic.format {
 		}
 		
 		[Test]
+		[Ignore("Not yet implemented.")]
 		public function testFormat():void {
 			
 		}
