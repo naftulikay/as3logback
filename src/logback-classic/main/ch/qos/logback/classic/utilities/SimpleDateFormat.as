@@ -4,20 +4,6 @@ package ch.qos.logback.classic.utilities {
 	 * @author TK Kocheran <a href="mailto:rfkrocktk@gmail.com">&lt;rfkrocktk@gmail.com&gt;</a>
 	 */
 	public class SimpleDateFormat extends EventDispatcher {
-//		FIXME This implementation is ridiculous and slow. Find. A. Better. Way.
-// 		Like, here's an idea:
-//
-//			Split the string into an array of word-characters and non-word-characters:
-//				['yyyy', '-', 'MM', '-', 'dd']
-//
-//			Loop through the array, testing each item for whether it's a word or non-word:
-//				for each (var item:String in items) {
-//					if (new RegExp("\\w").test(item)) {
-//						...
-//					}
-//				}
-//			
-//			If it's a word, run a replace with an incrementing index, to prevent backwards messups.
 		
 		internal static const DAYS_OF_WEEK_ABBREVIATED:Array = [
 			"Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"
@@ -38,42 +24,11 @@ package ch.qos.logback.classic.utilities {
 			"August", "September", "October", "November", "December"
 		];
 		
-		public static const AM:String = "AM";
+		internal static const AM:String = "AM";
 		
-		public static const PM:String = "PM";
+		internal static const PM:String = "PM";
 		
-		internal static const yearExpression:RegExp = new RegExp("(y{4}|y{2})");
-		
-		internal static const monthExpression:RegExp = new RegExp("(M{1,4})");
-		
-		internal static const dayOfMonthExpression:RegExp = new RegExp("(d{1,2})");
-		
-		internal static const dayOfWeekExpression:RegExp = new RegExp("(E{1,4})");
-		
-		internal static const ampmExpression:RegExp = new RegExp("(a{1,2})");
-
-		internal static const hourOfDayExpression0:RegExp = new RegExp("(H{1,2})"); // 0-23 
-		
-		internal static const hourOfDayExpression1:RegExp = new RegExp("(k{1,2})"); // 1-24
-		
-		internal static const hourOfDayExpression2:RegExp = new RegExp("(K{1,2})"); // 0-11, ampm 
-		
-		internal static const hourOfDayExpression3:RegExp = new RegExp("(h{1,2})"); // 1-12, ampm
-		
-		internal static const minuteOfHourExpression:RegExp = new RegExp("(m{1,2})");
-		
-		internal static const secondOfMinuteExpression:RegExp = new RegExp("(s{1,2})");
-		
-		internal static const millisecondExpression:RegExp = new RegExp("(S{1,3})");
-		
-		internal static const checks:Array = [yearExpression, monthExpression, dayOfMonthExpression, dayOfWeekExpression, 
-			ampmExpression, hourOfDayExpression0, hourOfDayExpression1, hourOfDayExpression2, hourOfDayExpression3,
-			minuteOfHourExpression, secondOfMinuteExpression, millisecondExpression
-		];
-		
-		internal static const splitter:RegExp = new RegExp("(\\W+|\\w)");
-		
-		internal static const wordCheck:RegExp = new RegExp("\\w");
+		internal static const DATE_FORMAT_ENTRIES:RegExp = new RegExp("(y{4}|y{2}|M{1,4}|d{1,2}|E{1,4}|a{1,2}|H{1,2}|k{1,2}|K{1,2}|h{1,2}|m{1,2}|s{1,2}|S{1,3})");
 		
 		private var _pattern:String;
 		
@@ -86,117 +41,70 @@ package ch.qos.logback.classic.utilities {
 		}
 		
 		public function format(date:Date):String {
-//			FIXME Please, please, please make me easier to understand!
-			var result:String = this.pattern;
-//			split the pattern into letter groups and non-word characters.
-			var chunks:Array = result.split(splitter);
+			var chunks:Array = pattern.concat().split(SimpleDateFormat.DATE_FORMAT_ENTRIES);
 			
-//			for every chunk in the string
 			for (var i:uint = 0; i < chunks.length; i++) {
 				var chunk:String = chunks[i];
-//				if chunk is empty or doesn't have any word characters, skip a loop
-				if (chunk == "" || !wordCheck.test(chunk))
+				
+				if (chunk == "" || !DATE_FORMAT_ENTRIES.test(chunk))
 					continue;
-				
-				var entry:String = "";
-				
-//				while chunk still has stuff left in it
-				while (chunk.length > 0) {
-					var found:Boolean;
 					
-//					run each test on the chunk
-					for each (var check:RegExp in checks) {
-						if (check.test(chunk)) {
-//							notify that we found something
-							found = true;
-//							get the matches of the regexp
-							var matchGroup:Object = check.exec(chunk);
-//							get the beginning of the first match
-							var begin:int = chunk.search(check);
-//							get the end of the first match. 
-							var end:int = begin + String(matchGroup[1]).length;
-							
-							if (begin > 0)
-								entry += chunk.substring(0, begin -1);
-								
-							entry += this.apply(matchGroup[1], check, date);
-							
-							chunk = chunk.substr(end + 1);
-						}
-					}
-					
-					if (!found) {
-						entry += chunk;
-						chunk = "";
-					}
+				var replacement:String = "";
+				
+				switch (chunk.charAt(0)) {
+					case "y": // years
+						replacement = getYear(date, chunk.length);
+						break;
+						
+					case "M": // months
+						replacement = getMonth(date, chunk.length);
+						break;
+						
+					case "d": // date
+						replacement = getDayOfMonth(date, chunk.length); 
+						break;
+						
+					case "E": // day
+						replacement = getDayOfWeek(date, chunk.length);
+						break;
+						
+					case "a": // am|pm
+						replacement = getAMPM(date);
+						break;
+						
+					case "H": // hour (0-23)
+						replacement = getHourOfDay0(date, chunk.length);
+						break;
+						
+					case "k": // hour (1-24)
+						replacement = getHourOfDay1(date, chunk.length);
+						break;
+						
+					case "K": // hour (0-11)
+						replacement = getHourOfDay2(date, chunk.length);
+						break;
+						
+					case "h": // hour (1-12)
+						replacement = getHourOfDay3(date, chunk.length);
+						break;
+						
+					case "m": // minute
+						replacement = getMinuteOfHour(date, chunk.length);
+						break;
+						
+					case "s": // second
+						replacement = getSecondOfMinute(date, chunk.length);
+						break;
+						
+					case "S": // millisecond
+						replacement = getMillisecond(date, chunk.length);
+						break;
 				}
 				
-				chunks[i] = entry;
+				chunks[i] = replacement;
 			}
 			
-			result = chunks.join("");
-						
-			return result;
-		}
-		
-		internal function apply(input:String, value:RegExp, date:Date):String {
-			var result:String = input;
-			
-			while (value.test(result)) {
-				var matchGroups:Object = value.exec(result);
-				
-				switch (value) {
-					case yearExpression:
-						result = result.replace(value, getYear(date, String(matchGroups[1]).length));
-						break;
-						
-					case monthExpression:
-						result = result.replace(value, getMonth(date, String(matchGroups[1]).length));
-						break;
-						
-					case dayOfMonthExpression:
-						result = result.replace(value, getDayOfMonth(date, String(matchGroups[1]).length));
-						break;
-						
-					case dayOfWeekExpression:
-						result = result.replace(value, getDayOfWeek(date, String(matchGroups[1]).length));
-						break;
-						
-					case ampmExpression:
-						result = result.replace(value, getAMPM(date));
-						break;
-						
-					case hourOfDayExpression0:
-						result = result.replace(value, getHourOfDay0(date, String(matchGroups[1]).length));
-						break;
-						
-					case hourOfDayExpression1:
-						result = result.replace(value, getHourOfDay1(date, String(matchGroups[1]).length));
-						break;
-						
-					case hourOfDayExpression2:
-						result = result.replace(value, getHourOfDay2(date, String(matchGroups[1]).length));
-						break;
-						
-					case hourOfDayExpression3:
-						result = result.replace(value, getHourOfDay3(date, String(matchGroups[1]).length));
-						break;
-						
-					case minuteOfHourExpression:
-						result = result.replace(value, getMinuteOfHour(date, String(matchGroups[1]).length));
-						break;
-						
-					case secondOfMinuteExpression:
-						result = result.replace(value, getSecondOfMinute(date, String(matchGroups[1]).length));
-						break;
-					
-					case millisecondExpression:
-						result = result.replace(value, getMillisecond(date, String(matchGroups[1]).length));
-						break;
-				}
-			}
-			
-			return result;
+			return chunks.join("");
 		}
 		
 		internal function getYear(value:Date, size:int):String {

@@ -60,12 +60,6 @@ package ch.qos.logback.classic.utilities {
 		}
 		
 		[Test]
-		[Ignore("Not yet implemented")]
-		public function testApply():void {
-			
-		}
-		
-		[Test]
 		public function testGetYear():void {
 			var date:Date = new Date();
 			var old:Date = new Date(300, 0, 1, 0, 0, 0, 0);
