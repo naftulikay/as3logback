@@ -12,6 +12,10 @@ package ch.qos.logback.core.layout {
 		
 		private var _name:String;
 		
+		public function AbstractLayout(name:String = null) {
+			this.name = name;
+		}
+		
 		public function apply(value:LoggerEntry) : String {
 			throw new IllegalOperationError("Subclasses must override this method!");
 		}

@@ -22,7 +22,12 @@ package ch.qos.logback.classic.layout.pattern {
 				var groups:Object = this.parameterExpression.exec(parameters);
 				var param:Number = new Number(groups[1]);
 				
-				value = pad(value, param);
+				var result:Array = [];
+				for each (var line:String in value.split("\n")) {
+					result.push(pad(line, param));
+				}
+				
+				value = result.join("\n");
 			}
 
 			return value;

@@ -1,12 +1,13 @@
 package ch.qos.logback.core {
 	import org.slf4fp.Logger;
+	import ch.qos.logback.core.Logger;
 
 	import flash.errors.IllegalOperationError;
 	import flash.events.EventDispatcher;
 	/**
 	 * @author TK Kocheran <a href="mailto:rfkrocktk@gmail.com">&lt;rfkrocktk@gmail.com&gt;</a>
 	 */
-	public class AbstractLogger extends EventDispatcher implements Logger, org.slf4fp.Logger {
+	public class AbstractLogger extends EventDispatcher implements ch.qos.logback.core.Logger, org.slf4fp.Logger {
 		
 		private var _name:String;
 		
@@ -14,7 +15,7 @@ package ch.qos.logback.core {
 		
 		private var _children:LoggerList = new LoggerList();
 		
-		private var _parent:Logger;
+		private var _parent:ch.qos.logback.core.Logger;
 		
 		private var _level:Level;
 		
@@ -25,7 +26,7 @@ package ch.qos.logback.core {
 		private var _loggerEntryFactory:LoggerEntryFactory;
 		
 		public function AbstractLogger(name:String = null, messageFormatter:MessageFormatter = null,
-				parent:Logger = null, level:Level = null, additive:Boolean = true, 
+				parent:ch.qos.logback.core.Logger = null, level:Level = null, additive:Boolean = true, 
 				loggerEntryFactory:LoggerEntryFactory = null) {
 			this.name = name;
 			this.messageFormatter = messageFormatter;
@@ -35,27 +36,27 @@ package ch.qos.logback.core {
 			this.loggerEntryFactory = loggerEntryFactory;
 		}
 		
-		public function trace(message:String, args:*) : Logger {
+		public function trace(message:String, ...args) :org.slf4fp.Logger {
 			unsupport();
 			return null;
 		}
 
-		public function debug(message:String, args:*) : Logger {
+		public function debug(message:String, ...args) : org.slf4fp.Logger {
 			unsupport();
 			return null;
 		}
 
-		public function info(message:String, args:*) : Logger {
+		public function info(message:String, ...args) : org.slf4fp.Logger {
 			unsupport();
 			return null;
 		}
 
-		public function warn(message:String, args:*) : Logger {
+		public function warn(message:String, ...args) : org.slf4fp.Logger {
 			unsupport();
 			return null;
 		}
 
-		public function error(message:String, args:*) : Logger {
+		public function error(message:String, ...args) : org.slf4fp.Logger {
 			unsupport();
 			return null;
 		}
@@ -86,7 +87,7 @@ package ch.qos.logback.core {
 		
 		public function getName():String { return name; }
 		
-		public function setName(value:String):Logger {
+		public function setName(value:String):ch.qos.logback.core.Logger {
 			this.name = value;
 			return this;
 		}
@@ -97,7 +98,7 @@ package ch.qos.logback.core {
 		
 		public function getAppenders():AppenderList { return appenders; }
 		
-		public function setAppenders(value:AppenderList):Logger { 
+		public function setAppenders(value:AppenderList):ch.qos.logback.core.Logger { 
 			this.appenders = value;
 			return this;
 		}
@@ -108,18 +109,18 @@ package ch.qos.logback.core {
 		
 		public function getChildren():LoggerList { return children; }
 		
-		public function setChildren(value:LoggerList):Logger {
+		public function setChildren(value:LoggerList):ch.qos.logback.core.Logger {
 			this.children = value;
 			return this;
 		}
 		
 		[Bindable]
-		public function get parent():Logger { return _parent; }
-		public function set parent(value:Logger):void { _parent = value; }
+		public function get parent():ch.qos.logback.core.Logger { return _parent; }
+		public function set parent(value:ch.qos.logback.core.Logger):void { _parent = value; }
 		
-		public function getParent():Logger { return parent; }
+		public function getParent():ch.qos.logback.core.Logger { return parent; }
 		
-		public function setParent(value:Logger):Logger {
+		public function setParent(value:ch.qos.logback.core.Logger):ch.qos.logback.core.Logger {
 			this.parent = value;
 			return this; 
 		}
@@ -130,7 +131,7 @@ package ch.qos.logback.core {
 		
 		public function getLevel():Level { return level; }
 		
-		public function setLevel(value:Level):Logger { 
+		public function setLevel(value:Level):ch.qos.logback.core.Logger { 
 			this.level = value; 
 			return this;
 		}
@@ -141,7 +142,9 @@ package ch.qos.logback.core {
 		
 		public function getAdditive():Boolean { return additive; }
 		
-		public function setAdditive(value:Boolean):Logger { 
+		public function isAdditive():Boolean { return additive; }
+		
+		public function setAdditive(value:Boolean):ch.qos.logback.core.Logger { 
 			this.additive = value;
 			return this;
 		}
@@ -152,7 +155,7 @@ package ch.qos.logback.core {
 		
 		public function getMessageFormatter():MessageFormatter { return this.messageFormatter; }
 		
-		public function setMessageFormatter(value:MessageFormatter):Logger {
+		public function setMessageFormatter(value:MessageFormatter):ch.qos.logback.core.Logger {
 			this.messageFormatter = value;
 			return this;
 		}
@@ -163,7 +166,7 @@ package ch.qos.logback.core {
 		
 		public function getLoggerEntryFactory():LoggerEntryFactory { return loggerEntryFactory; }
 		
-		public function setLoggerEntryFactory(value:LoggerEntryFactory):Logger { 
+		public function setLoggerEntryFactory(value:LoggerEntryFactory):ch.qos.logback.core.Logger { 
 			this.loggerEntryFactory = value;
 			return this;
 		}

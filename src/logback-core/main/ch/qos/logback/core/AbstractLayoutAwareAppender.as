@@ -7,6 +7,11 @@ package ch.qos.logback.core {
 		
 		private var _layout:Layout;
 		
+		public function AbstractLayoutAwareAppender(name:String = null, layout:Layout = null) {
+			super(name);
+			this.layout = layout;
+		}
+		
 		public function getLayout() : Layout {
 			return _layout;
 		}

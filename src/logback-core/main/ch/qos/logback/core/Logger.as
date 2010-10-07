@@ -6,21 +6,21 @@ package ch.qos.logback.core {
 	/**
 	 * @author TK Kocheran <a href="mailto:rfkrocktk@gmail.com">&lt;rfkrocktk@gmail.com&gt;</a>
 	 */
-	public interface Logger extends Logger, IEventDispatcher {
+	public interface Logger extends org.slf4fp.Logger, IEventDispatcher {
 		
 //		logger entry factory
 		function get loggerEntryFactory():LoggerEntryFactory;
 		
 		function getLoggerEntryFactory():LoggerEntryFactory;
 		
-		function setLoggerEntryFactory(value:LoggerEntryFactory):Logger;
+		function setLoggerEntryFactory(value:LoggerEntryFactory):ch.qos.logback.core.Logger;
 		
 //		message formatter
 		function get messageFormatter():MessageFormatter;
 		
 		function getMessageFormatter():MessageFormatter;
 		
-		function setMessageFormatter(value:MessageFormatter):Logger;
+		function setMessageFormatter(value:MessageFormatter):ch.qos.logback.core.Logger;
 		
 //		appenders
 		function get appenders():AppenderList;
@@ -37,13 +37,13 @@ package ch.qos.logback.core {
 		
 		function isAdditive():Boolean;
 		
-		function setAdditive(value:Boolean):Logger;
+		function setAdditive(value:Boolean):ch.qos.logback.core.Logger;
 		
 //		level
 		function get level():Level;
 		
 		function getLevel():Level;
 		
-		function setLevel(value:Level):Logger;
+		function setLevel(value:Level):ch.qos.logback.core.Logger;
 	}
 }

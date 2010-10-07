@@ -9,6 +9,10 @@ package ch.qos.logback.core {
 		
 		private var _name:String;
 		
+		public function AbstractAppender(name:String = null) {
+			this.name = name;
+		}
+		
 		public function append(value:LoggerEntry) : Appender {
 			throw new IllegalOperationError("Subclasses should override this method!");
 		}

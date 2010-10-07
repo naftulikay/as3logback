@@ -36,6 +36,8 @@ package ch.qos.logback.core {
 					return appender;
 				}
 			}
+			
+			return null;
 		}
 		
 		public function clear():AppenderList {
