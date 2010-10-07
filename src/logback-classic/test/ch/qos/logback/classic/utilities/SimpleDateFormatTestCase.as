@@ -51,9 +51,9 @@ package ch.qos.logback.classic.utilities {
 		public function testFormat():void {
 			var date:Date = new Date(1970, 0, 1, 0, 0, 0, 0);
 			
-			var expected:String = "1970 70 1 01 Jan January 1 01 5 05 Thurs Thursday AM 0 00 1 01 0 00 12 12";
+			var expected:String = "1970 70 1 01 Jan January 1 01 5 05 Thurs Thursday AM 0 00 1 01 0 00 12 12 0 00 0 00 0 00 000";
 			
-			this.reference.setPattern("yyyy yy M MM MMM MMMM d dd E EE EEE EEEE a H HH k kk K KK h hh");
+			this.reference.setPattern("yyyy yy M MM MMM MMMM d dd E EE EEE EEEE a H HH k kk K KK h hh m mm s ss S SS SSS");
 			
 			Assert.assertEquals("Failed to evaluate pattern.",
 				expected, this.reference.format(date));
