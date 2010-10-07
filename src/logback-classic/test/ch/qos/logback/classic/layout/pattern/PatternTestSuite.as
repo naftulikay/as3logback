@@ -12,6 +12,8 @@ package ch.qos.logback.classic.layout.pattern {
 		
 		public var formattingPatternLayoutProcessorTestCase:FormattingPatternLayoutProcessorTestCase;
 		
+		public var levelNamePatternLayoutProcessorTestCase:LevelNamePatternLayoutProcessorTestCase;
+		
 		public var loggerNamePatternLayoutProcessorTestCase:LoggerNamePatternLayoutProcessorTestCase;
 	}
 }
