@@ -10,6 +10,8 @@ package ch.qos.logback.classic.layout.pattern {
 		
 		public var callerNameLayoutProcessorTestCase:CallerNamePatternLayoutProcessorTestCase;
 		
+		public var classNameLayoutProcessorTestCase:ClassNamePatternLayoutProcessorTestCase;
+		
 		public var datePatternLayoutProcessorTestCase:DatePatternLayoutProcessorTestCase;
 		
 		public var formattingPatternLayoutProcessorTestCase:FormattingPatternLayoutProcessorTestCase;

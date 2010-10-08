@@ -37,7 +37,8 @@ package ch.qos.logback.classic.layout.pattern {
 		
 		override public function apply(value:LoggerEntry) : String {
 			var result:String = "";
-			
+			if (processors)
+				value = null;	
 			return result;
 		}
 		
