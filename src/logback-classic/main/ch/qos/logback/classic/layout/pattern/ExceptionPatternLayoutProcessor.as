@@ -40,12 +40,12 @@ package ch.qos.logback.classic.layout.pattern {
 					if (intLength == int.MAX_VALUE) {
 //						if there's no limit to the result, just dump it.
 						if (result == null)
-							result = Error(argument).getStackTrace();
+							result = (argument as Error).getStackTrace();
 						else 
-							result += "\n" + Error(argument).getStackTrace();
+							result += "\n" + (argument as Error).getStackTrace();
 					} else {
 //						if there IS a limit, then we break into an array, and join what's required.
-						var lines:String = Error(argument).getStackTrace().split(this.newlineExpression)
+						var lines:String = (argument as Error).getStackTrace().split(this.newlineExpression)
 							.slice(0, intLength + 1).join("\n");
 						
 						if (result == null)
