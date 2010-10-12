@@ -1,9 +1,10 @@
 package ch.qos.logback.classic {
 	import ch.qos.logback.classic.entry.DefaultLoggerEntryFactory;
-	import ch.qos.logback.core.LoggerEntryFactory;
 	import ch.qos.logback.classic.format.DefaultMessageFormatter;
 	import ch.qos.logback.core.AbstractLogger;
 	import ch.qos.logback.core.Level;
+	import ch.qos.logback.core.Logger;
+ 	import ch.qos.logback.core.LoggerEntryFactory;
 	import ch.qos.logback.core.MessageFormatter;
 
 	import org.slf4fp.Logger;
@@ -14,7 +15,7 @@ package ch.qos.logback.classic {
 	public class DefaultLogger extends AbstractLogger {
 		
 		public function DefaultLogger(name:String = null, messageFormatter:MessageFormatter = null,
-				parent:Logger = null, level:Level = null, additive:Boolean = false,
+				parent:ch.qos.logback.core.Logger = null, level:Level = null, additive:Boolean = false,
 				loggerEntryFactory:LoggerEntryFactory = null) {
 			super(name, messageFormatter, parent, level, additive, loggerEntryFactory);
 			
@@ -60,7 +61,7 @@ package ch.qos.logback.classic {
 			return this;
 		}
 		
-		public function append(level:Level, message:String, arguments:Array):Logger {
+		public function append(level:Level, message:String, arguments:Array):ch.qos.logback.core.Logger {
 			var now:Date = new Date();
 			
 			for (var i:uint = 0; i < this.appenders.size(); i++) {

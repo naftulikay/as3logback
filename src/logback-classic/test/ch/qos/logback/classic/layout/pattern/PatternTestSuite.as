@@ -33,5 +33,7 @@ package ch.qos.logback.classic.layout.pattern {
 		public var newlinePatternLayoutProcessorTestCase:NewlinePatternLayoutProcessorTestCase;
 		
 		public var patternLayoutTestCase:PatternLayoutTestCase;
+		
+		public var relativePatternLayoutProcessorTestCase:RelativePatternLayoutProcessorTestCase;
 	}
 }

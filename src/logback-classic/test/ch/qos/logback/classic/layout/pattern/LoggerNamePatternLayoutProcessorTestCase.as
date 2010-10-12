@@ -34,6 +34,10 @@ package ch.qos.logback.classic.layout.pattern {
 				"com.tkassembled.fabulous.Fabulous", this.reference.apply("%logger",
 					new DefaultLoggerEntry("com.tkassembled.fabulous.Fabulous")));
 			
+			Assert.assertEquals("Failed to trim string to 0, returning only the end of the name.",
+				"Fabulous", this.reference.apply("%logger{0}", 
+					new DefaultLoggerEntry("com.tkassembled.fabulous.Fabulous")));
+			
 			Assert.assertEquals("Failed to trim string to 10.",
 				"c.t.f.Fabulous", this.reference.apply("%logger{10}", 
 					new DefaultLoggerEntry("com.tkassembled.fabulous.Fabulous")));

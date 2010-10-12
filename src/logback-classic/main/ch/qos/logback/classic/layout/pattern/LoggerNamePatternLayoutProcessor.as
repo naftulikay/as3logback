@@ -35,6 +35,10 @@ package ch.qos.logback.classic.layout.pattern {
 			
 			var parts:Array = value.split(".");
 			
+//			if we have %logger{0}, return the end of the logger name.
+			if (maxChars == 0)
+				return parts[parts.length - 1];
+			
 			var result:String = "";
 			
 			var calculatedLength:int = value.length;
