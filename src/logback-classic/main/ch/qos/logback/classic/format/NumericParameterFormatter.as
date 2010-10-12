@@ -6,30 +6,24 @@ package ch.qos.logback.classic.format {
 	 */
 	public class NumericParameterFormatter implements MessageFormatter {
 		
-		private var numericParameterExpression:RegExp = new RegExp("\\{([0-9]+)\\}", "g");
+		private var numericParameterMatcher:RegExp = new RegExp("(\\{[0-9]+\\})");
 		
-		public function format(message:String, arguments:Array) : String {			
-			var result:String = message.concat();
+		private var numericParameterExpression:RegExp = new RegExp("\\{([0-9]+)\\}");
+		
+		public function format(message:String, arguments:Array) : String {						
+			var result:Array = message.split(numericParameterMatcher);
 			
-			if (arguments != null && arguments.length > 0) {
-				if (numericParameterExpression.test(result)) {
-//					replace numerically
-					var matchGroup:Object = numericParameterExpression.exec(result);
-					
-					while (matchGroup != null) {
-						var index:int = int(matchGroup[1]);
-						
-						if (arguments[index] != undefined) {
-							while (result.indexOf(matchGroup[0]) != -1)
-								result = result.replace("{" + index + "}", arguments[index]);
-						}
-						
-						matchGroup = numericParameterExpression.exec(result);
-					}
+			for (var i:uint = 0; i < result.length; i++) {
+				var current:String = result[i];
+				
+				if (numericParameterExpression.test(current)) {
+					var arg:int = int(numericParameterExpression.exec(current)[1]);
+					if (arguments[arg] != undefined)
+						result[i] = arguments[arg];
 				}
 			}
 			
-			return result;
+			return result.join("");
 		}
 	}
 }

@@ -13,7 +13,13 @@ package ch.qos.logback.classic.layout.pattern {
 		}
 		
 		override public function apply(pattern:String, entry:LoggerEntry) : String {
-			return null;
+			if (!test(pattern))
+				return null;
+			
+			var matchGroup:Object = expression.exec(pattern);
+			var alignment:String = matchGroup[1];
+			
+			return align(entry.formattedMessage, alignment);
 		}
 	}
 }

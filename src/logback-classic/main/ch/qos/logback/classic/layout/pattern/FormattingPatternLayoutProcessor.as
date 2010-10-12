@@ -6,7 +6,7 @@ package ch.qos.logback.classic.layout.pattern {
 	 */
 	public class FormattingPatternLayoutProcessor extends AbstractPatternLayoutProcessor {
 		
-		private var expression:RegExp = new RegExp("%((?:\\-?[0-9]+)?\\.?(?:\\-?[0-9]+))?\\((.+?)(?<!\\\)\\)");
+		private var expression:RegExp = /%((?:\-?[0-9]+)?\.?(?:\-?[0-9]+)?)?\((.+?)(?<!\\)\)/;
 		
 		override public function test(pattern:String):Boolean {
 			return expression.test(pattern);
@@ -14,12 +14,13 @@ package ch.qos.logback.classic.layout.pattern {
 		
 		override public function apply(pattern:String, entry:LoggerEntry) : String {
 			var groups:Object = this.expression.exec(pattern);
-			var parameters:String = groups[1];
+			var alignment:String = groups[1];
 			var value:String = groups[2];
 			
-			entry.level;
+			if (entry == null)
+				entry = null; // fight FDT warnings!
 			
-			return align(value, parameters);
+			return align(value, alignment);
 		}
 	}
 }

@@ -13,11 +13,11 @@ package ch.qos.logback.classic.format {
 		public function format(message:String, arguments:Array) : String {
 			var result:String = message;
 			
+//			format numbered parameters. ('{0}', '{24}', etc.)
+			result = this.numericParameterFormatter.format(result, arguments);			
+			
 //			format simple parameters. ('{}' sequences)
 			result = this.simpleParameterFormatter.format(result, arguments);
-			
-//			format numbered parameters. ('{0}', '{24}', etc.)
-			result = this.numericParameterFormatter.format(result, arguments);
 			
 			return result;
 		}

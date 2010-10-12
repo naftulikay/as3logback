@@ -13,15 +13,25 @@ package ch.qos.logback.classic.layout.pattern {
 		}
 		
 		[Test]
-		[Ignore("Not yet implemented.")]
 		public function testTest():void {
-			Assert.fail("Not yet implemented.");
+			var tests:Array = ["%(%a %b %c)", "%20(%a abcdefg)", "%20.20(%d hello)"];
+			
+			for each (var test:String in tests) {
+				Assert.assertTrue("Failed to match '" + test + "'.",
+					this.reference.test(test));
+			}
+			
+			Assert.assertFalse("Failed to reject unrelated value.",
+				this.reference.test("%unrelated"));
 		}
 		
 		[Test]
-		[Ignore("Not yet implemented.")]
 		public function testApply():void {
-			Assert.fail("Not yet implemented.");
+			Assert.assertEquals("Failed to ignore alignment when no parameters given.",
+				"Hello World!", this.reference.apply("%(Hello World!)", null));
+				
+			Assert.assertEquals("Failed to align value.",
+				"   Hello World!", this.reference.apply("%15(Hello World!)", null));
 		}
 	}
 }
