@@ -11,7 +11,7 @@
 		<![CDATA[
 			import ch.qos.logback.classic.utilities.UtilitiesTestSuite;
 			import ch.qos.logback.classic.format.FormatTestSuite;
-			import ch.qos.logback.classic.layout.pattern.PatternTestSuite;
+			import ch.qos.logback.classic.pattern.PatternTestSuite;
 			import org.flexunit.runner.notification.async.XMLListener;
 			import org.flexunit.listeners.CIListener;
 			import org.flexunit.listeners.UIListener;
