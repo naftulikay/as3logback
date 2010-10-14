@@ -6,7 +6,7 @@ package ch.qos.logback.classic.pattern {
 	[Suite][RunWith("org.flexunit.runners.Suite")]
 	public class PatternTestSuite {
 		
-		public var abstractConverterTestCase:AbstractConverterTestCase;
+		public var abstractConverterTestCase:AbstractConverterPTestCase;
 		
 		public var callerNameConverterTestCase:CallerNameConverterTestCase;
 		

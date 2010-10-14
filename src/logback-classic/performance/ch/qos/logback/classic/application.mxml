@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+               xmlns:s="library://ns.adobe.com/flex/spark"
+               xmlns:mx="library://ns.adobe.com/flex/mx" 
+               creationComplete="onCreationComplete()">
+	
+	<s:VGroup width="100%" height="100%"
+			paddingLeft="10" paddingRight="10" paddingBottom="10"
+			paddingTop="10">
+		<s:TextArea id="text" width="100%" height="100%"
+			editable="false" fontFamily="Courier New" fontSize="14"
+			borderVisible="false"/>
+	</s:VGroup>
+	
+	<fx:Script>
+		<![CDATA[
+			import ch.qos.logback.classic.pattern.PatternPerformanceTestSuite;
+			import com.gskinner.performance.TextLog;
+			import com.gskinner.performance.PerformanceTest;
+			
+			private var performanceTest:PerformanceTest;
+			
+			private var textLog:TextLog;
+			
+			private function onCreationComplete():void {
+				this.performanceTest = PerformanceTest.getInstance();
+				this.performanceTest.delay = 300;
+
+				this.textLog = new TextLog();
+				this.textLog.out = writeOutput;
+				
+				this.performanceTest.addEventListener(Event.COMPLETE, onTestsComplete);
+				this.performanceTest.queueTestSuite(new PatternPerformanceTestSuite());
+			}
+
+			private function onTestsComplete(e:Event) : void {
+				
+			}
+			
+			private function writeOutput(message:*):void {
+				if (/\[Test Suite/.test(message))
+					return;
+				
+				if (String(message).charAt(0) == "\t")
+					message = String(message).substr(1);
+				
+				this.text.appendText(message + "\n");
+				callLater(function():void {
+					text.scroller.viewport.verticalScrollPosition = 
+						(text.scroller.viewport.contentHeight - text.height);
+				});
+			}
+		]]>
+	</fx:Script>
+</s:Application>

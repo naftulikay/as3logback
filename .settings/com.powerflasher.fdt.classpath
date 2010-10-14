@@ -19,4 +19,6 @@
     <AS3Classpath generateProblems="false" sdkBased="false" type="lib" useAsSharedCode="false">lib/logback-core/test/flexunit-core-flex-4.1.0-RC1.swc</AS3Classpath>
     <AS3Classpath generateProblems="false" sdkBased="false" type="lib" useAsSharedCode="false">lib/logback-core/test/flexunit-flexcoverlistener-4.1.0-RC1.swc</AS3Classpath>
     <AS3Classpath generateProblems="false" sdkBased="false" type="lib" useAsSharedCode="false">lib/logback-core/test/flexunit-uilistener-4.1.0-RC1.swc</AS3Classpath>
+    <AS3Classpath generateProblems="true" sdkBased="false" type="source" useAsSharedCode="false">src/logback-classic/performance</AS3Classpath>
+    <AS3Classpath generateProblems="false" sdkBased="false" type="lib" useAsSharedCode="false">lib/logback-classic/performance/gskinner-performance-2.0.swc</AS3Classpath>
 </AS3Classpath>

@@ -24,6 +24,21 @@
 		<mkdir dir="${junit.logback-classic.bin.dir}"/>
 	</target>
 	
+	<target name="compile.logback-classic.performance" depends="setup.main">
+		<mxmlc file="${performance.logback-classic.src.file}" output="${performance.logback-classic.bin.file}"
+				debug="true" incremental="true" maxmemory="256m" fork="true">
+			<default-size width="800" height="600"/>
+			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+			<source-path path-element="${main.logback-core.src.dir}"/>
+			<source-path path-element="${main.logback-classic.src.dir}"/>
+			<source-path path-element="${performance.logback-classic.src.dir}"/>
+			<compiler.library-path dir="${main.logback-core.lib.dir}" append="true" includes="*.swc"/>
+			<compiler.library-path dir="${main.logback-classic.lib.dir}" append="true" includes="*.swc"/>
+			<compiler.library-path dir="${performance.logback-classic.lib.dir}" append="true" includes="*.swc"/>
+			<static-link-runtime-shared-libraries>true</static-link-runtime-shared-libraries>
+		</mxmlc>
+	</target>
+	
 	<target name="compile.logback-classic.test" depends="setup.test">
 		<mxmlc file="${test.logback-classic.src.file}" output="${test.logback-classic.bin.file}"
 				debug="true" incremental="true" maxmemory="256m" fork="true">
@@ -38,6 +53,12 @@
 			<compiler.library-path dir="${test.logback-classic.lib.dir}" append="true" includes="*.swc"/>
 			<static-link-runtime-shared-libraries>true</static-link-runtime-shared-libraries>
 		</mxmlc>
+	</target>
+	
+	<target name="performance.logback-classic" depends="compile.logback-classic.performance">
+		<exec executable="/usr/bin/flashplayer" >
+			<arg line="${basedir}/${performance.logback-classic.bin.file}"/>
+		</exec>
 	</target>
 	
 	<target name="unittest.logback-classic" depends="compile.logback-classic.test">
