@@ -6,19 +6,25 @@ package ch.qos.logback.classic.format {
 	 */
 	public class SimpleParameterFormatter implements MessageFormatter {
 		
+		private var expression:RegExp = /(\{\})/;
+		
 		public function format(message:String, arguments:Array) : String {
-			var result:String = message;
-			
 			if (arguments != null && arguments.length > 0) {
-//				replace simple '{}' parameters, untyped, in order.
-				var current:uint = 0;
-				while (result.indexOf("{}") != -1 && current < arguments.length) {
-					result = result.replace("{}", arguments[current]);
-					current++;
+				var result:Array = message.split(expression);
+				var currentArgument:int = 0;
+				for (var i:uint = 0; i < result.length; i++) {
+					if (expression.test(result[i])) {
+						result[i] = arguments[currentArgument];
+						currentArgument++;
+						if (currentArgument >= arguments.length)
+							break;
+					}
 				}
+				
+				return result.join("");
 			}
 			
-			return result;
+			return message;
 		}
 	}
 }
