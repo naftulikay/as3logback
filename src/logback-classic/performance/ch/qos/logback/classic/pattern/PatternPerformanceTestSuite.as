@@ -51,7 +51,33 @@ package ch.qos.logback.classic.pattern {
 				new MethodTest(new ExceptionConverterPTestCase().testApplyShort, null, "FORMAT: %error{short}", 0, 1,
 					"Tests formatting of a short exception."),
 				new MethodTest(new ExceptionConverterPTestCase().testApplyShortWithAlign, null, "FORMAT: %100error{short}", 0, 1,
-					"Tests formatting and alignment of a short exception.")
+					"Tests formatting and alignment of a short exception."),
+//				FileNameConverter
+				new MethodTest(new FileNameConverterPTestCase().testApply, null, "FORMAT: %file", 0, 1,
+					"Tests formatting of a caller filename."),
+				new MethodTest(new FileNameConverterPTestCase().testApplyWithAlign, null, "FORMAT: %100file", 0, 1,
+					"Tests formatting and alignment of a filename."),
+//				FormattingConverter
+				new MethodTest(new FormattingConverterPTestCase().testApply, null, "FORMAT: %100(A brand new world is amazing!)", 0, 1,
+					"Tests alignment of a subblock of text."),
+//				LevelNameConverter
+				new MethodTest(new LevelNameConverterPTestCase().testApply, null, "FORMAT: %level", 0, 1,
+					"Tests formatting of a level."),
+				new MethodTest(new LevelNameConverterPTestCase().testApplyWithAlign, null, "FORMAT: %100level", 0, 1,
+					"Tests formatting and alignment of a level"),
+				new MethodTest(new LevelNameConverterPTestCase().testApplyFirst, null, "FORMAT: %level{first}", 0, 1,
+					"Tests formatting of a level with first letter capitalized."),
+				new MethodTest(new LevelNameConverterPTestCase().testApplyFirstWithAlign, null, "FORMAT: %100level{first}", 0, 1,
+					"Tests formatting and alignment of a level with first letter capitalized."),
+				new MethodTest(new LevelNameConverterPTestCase().testApplyLowercase, null, "FORMAT: %level{lower}", 0, 1,
+					"Tests formatting of a level in lowercase."),
+				new MethodTest(new LevelNameConverterPTestCase().testApplyLowercaseWithAlign, null, "FORMAT: %100level{lower}", 0, 1,
+					"Tests formatting and alignment of a level in lowercase."),
+				new MethodTest(new LevelNameConverterPTestCase().testApplyUppercase, null, "FORMAT: %level{upper}", 0, 1,
+					"Tests formatting of a level in uppercase."),
+				new MethodTest(new LevelNameConverterPTestCase().testApplyUppercaseWithAlign, null, "FORMAT: %100level{upper}", 0, 1,
+					"Tests formatting and alignment of a level in uppercase.")
+//				LineNumberConverter
 			];
 		}
 	}
