@@ -10,7 +10,14 @@ package ch.qos.logback.core {
 		
 		function setName(value:String):Appender;
 		
+		function getThreshold():Level;
+		
+		function setThreshold(value:Level):Appender;
+		
 		function get name():String;
 		function set name(value:String):void;
+		
+		function get threshold():Level;
+		function set threshold(value:Level):void;
 	}
 }

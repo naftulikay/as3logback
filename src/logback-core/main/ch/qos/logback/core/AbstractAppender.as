@@ -9,6 +9,8 @@ package ch.qos.logback.core {
 		
 		private var _name:String;
 		
+		private var _threshold:Level = Level.ALL;
+		
 		public function AbstractAppender(name:String = null) {
 			this.name = name;
 		}
@@ -26,6 +28,15 @@ package ch.qos.logback.core {
 			return this;
 		}
 		
+		public function getThreshold():Level {
+			return _threshold;
+		}
+		
+		public function setThreshold(value:Level):Appender {
+			this.threshold = value;
+			return this;
+		}
+		
 		[Bindable]
 		public function get name() : String {
 			return _name;
@@ -33,6 +44,15 @@ package ch.qos.logback.core {
 
 		public function set name(value:String) : void {
 			this._name = value;
+		}
+		
+		[Bindable]
+		public function get threshold() : Level {
+			return _threshold;
+		}
+
+		public function set threshold(threshold : Level) : void {
+			_threshold = threshold;
 		}
 	}
 }
