@@ -26,12 +26,7 @@ package ch.qos.logback.classic.pattern {
 				return null;
 			
 //			first, generate the stacktrace.
-			var stacktrace:String = null;
-			try {
-				throw new Error();
-			} catch (e:Error) {
-				stacktrace = e.getStackTrace();
-			}
+			var stacktrace:String = new Error().getStackTrace();
 			
 			var result:Array = [];
 			var lines:Array = stacktrace.split(new RegExp("\\n"));

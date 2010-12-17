@@ -31,12 +31,7 @@ package ch.qos.logback.classic.pattern {
 			if (!test(pattern))
 				return null;
 				
-			var stacktrace:String = null;
-			try {
-				throw new Error();
-			} catch (e:Error) {
-				stacktrace = e.getStackTrace();
-			}
+			var stacktrace:String = new Error().getStackTrace();
 			
 //			if the Flash Player isn't a debug edition or the SWF itself isn't 
 //			compiled with debug=true, just return a blank string.

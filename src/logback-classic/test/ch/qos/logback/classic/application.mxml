@@ -18,6 +18,7 @@
 			import org.flexunit.runner.FlexUnitCore;
 			
 			private static const TESTS:Array = [
+				ClassicTestSuite,
 				FormatTestSuite,
 				PatternTestSuite,
 				UtilitiesTestSuite

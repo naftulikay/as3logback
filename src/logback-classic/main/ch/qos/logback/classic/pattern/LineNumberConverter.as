@@ -33,12 +33,7 @@ package ch.qos.logback.classic.pattern {
 			if (entry == null)
 				entry = null; // avoid FDT warnings!
 			
-			var stacktrace:String = null;
-			try {
-				throw new Error();
-			} catch (e:Error) {
-				stacktrace = e.getStackTrace();
-			}
+			var stacktrace:String = new Error().getStackTrace();
 			
 			if (!Capabilities.isDebugger || !fileNameExpression.test(stacktrace))
 				return "";

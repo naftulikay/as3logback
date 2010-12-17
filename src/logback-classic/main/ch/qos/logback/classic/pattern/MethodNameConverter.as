@@ -30,12 +30,7 @@ package ch.qos.logback.classic.pattern {
 			if (entry == null)
 				entry = null; // fight FDT warnings!
 				
-			var stacktrace:String = null;
-			try {
-				throw new Error();
-			} catch (e:Error) {
-				stacktrace = e.getStackTrace();
-			}
+			var stacktrace:String = new Error().getStackTrace();
 			
 			var matchGroup:Object = expression.exec(pattern);
 			var alignment:String = matchGroup[1];

@@ -7,9 +7,9 @@ package ch.qos.logback.classic {
 	/**
 	 * @author TK Kocheran <a href="mailto:rfkrocktk@gmail.com">&lt;rfkrocktk@gmail.com&gt;</a>
 	 */
-	public class LoggerContext extends AbstractContext implements ILoggerFactory {
+	public class DefaultLoggerContext extends AbstractContext implements ILoggerFactory {
 		
-		public function LoggerContext() {
+		public function DefaultLoggerContext() {
 			super();
 		}
 		

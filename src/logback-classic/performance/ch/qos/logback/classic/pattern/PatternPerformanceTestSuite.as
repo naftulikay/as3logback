@@ -76,8 +76,12 @@ package ch.qos.logback.classic.pattern {
 				new MethodTest(new LevelNameConverterPTestCase().testApplyUppercase, null, "FORMAT: %level{upper}", 0, 1,
 					"Tests formatting of a level in uppercase."),
 				new MethodTest(new LevelNameConverterPTestCase().testApplyUppercaseWithAlign, null, "FORMAT: %100level{upper}", 0, 1,
-					"Tests formatting and alignment of a level in uppercase.")
+					"Tests formatting and alignment of a level in uppercase."),
 //				LineNumberConverter
+				new MethodTest(new LineNumberConverterPTestCase().testApply, null, "FORMAT: %line", 0, 1,
+					"Tests formatting of line numbers."),
+				new MethodTest(new LineNumberConverterPTestCase().testApplyWithAlign, null, "FORMAT: %100line", 0, 1,
+					"Tests formatting and alignment of a line number.")
 			];
 		}
 	}

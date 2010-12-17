@@ -26,49 +26,52 @@ package ch.qos.logback.classic {
 				this.loggerEntryFactory = new DefaultLoggerEntryFactory();
 		}
 		
-		override public function trace(message:String, args:*):org.slf4fp.Logger {
+		override public function trace(message:String, ...args):org.slf4fp.Logger {
 			if (isTraceEnabled) 
 				append(Level.TRACE, message, args);
 			
 			return this;
 		}
 
-		override public function debug(message:String, args:*):org.slf4fp.Logger {
+		override public function debug(message:String, ...args):org.slf4fp.Logger {
 			if (isDebugEnabled)
 				append(Level.DEBUG, message, args);
 			
 			return this;
 		}
 
-		override public function info(message:String, args:*):org.slf4fp.Logger {
+		override public function info(message:String, ...args):org.slf4fp.Logger {
 			if (isInfoEnabled)
 				append(Level.INFO, message, args);
 			
 			return this;
 		}
 
-		override public function warn(message:String, args:*):org.slf4fp.Logger {
+		override public function warn(message:String, ...args):org.slf4fp.Logger {
 			if (isWarnEnabled)
 				append(Level.WARN, message, args);
 			
 			return this;
 		}
 
-		override public function error(message:String, args:*):org.slf4fp.Logger {
+		override public function error(message:String, ...args):org.slf4fp.Logger {
 			if (isErrorEnabled)
 				append(Level.ERROR, message, args);
 			
 			return this;
 		}
 		
-		public function append(level:Level, message:String, arguments:Array):ch.qos.logback.core.Logger {
+		public function append(level:Level, message:String, parameters:Array):ch.qos.logback.core.Logger {
 			var now:Date = new Date();
+			var v:Vector.<Object> = new Vector.<Object>();
+			v.concat.apply(this, parameters);
 			
 			for (var i:uint = 0; i < this.appenders.size(); i++) {
 //				append to each registered appender.
+				
 				this.appenders.get(i).append(this.loggerEntryFactory
-					.create(this.name, now, level, message, arguments, 
-						this.messageFormatter.format(message, arguments)));	
+					.create(this.name, now, level, message, v, 
+						this.messageFormatter.format(message, parameters)));	
 			}
 			
 			return this;
