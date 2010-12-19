@@ -60,6 +60,39 @@ package ch.qos.logback.classic.utilities {
 		}
 		
 		[Test]
+		public function testParse():void {
+//			test for returning null values on useless data
+			Assert.assertNull("Failed to return null on a null value string.",
+					this.reference.parse(null));
+					
+			Assert.assertNull("Failed to return null on a zero-length string.",
+					this.reference.parse(""));
+			
+			Assert.assertNull("Failed to return null when pattern is null.",
+					this.reference.setPattern(null).parse("12345"));
+					
+			Assert.assertNull("Failed to return null when pattern is zero-length.",
+					this.reference.setPattern("").parse("12345"));
+				
+//			test for not returning null on appropriate data
+			Assert.assertNotNull("Failed to return a non-null value on appropriate info.",
+					this.reference.setPattern("MM").parse("12"));
+					
+//			test for associated use cases.
+			Assert.assertEquals("Failed to return proper date for time value.",
+					new Date(0, 0, 0, 12, 30, 30, 500).time, 
+					this.reference.setPattern("HH:mm:ss,SSS").parse("12:30:30,500").time);
+					
+			Assert.assertEquals("Failed to return proper date for date value.",
+					new Date(2010, 11, 1, 0, 0, 0 ,0).time, 
+					this.reference.setPattern("MM/dd/yyyy").parse("12/01/2010").time);
+					
+			Assert.assertEquals("Failed to return proper date and time for datetime value.",
+					new Date(2010, 11, 1, 12, 30, 30, 500).time,
+					this.reference.setPattern("MM/dd/yyyy HH:mm:ss,SSS").parse("12/01/2010 12:30:30,500").time);
+		}
+		
+		[Test]
 		public function testGetYear():void {
 			var date:Date = new Date();
 			var old:Date = new Date(300, 0, 1, 0, 0, 0, 0);

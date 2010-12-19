@@ -107,6 +107,59 @@ package ch.qos.logback.classic.utilities {
 			return chunks.join("");
 		}
 		
+		public function parse(value:String):Date {
+//			TODO Add parsing for literal string values such as month names and day names.
+			if (value == null || value.length == 0 || 
+					!pattern || pattern.length == 0) {
+				return null;	
+			}
+			
+			var result:Date = new Date(0, 0, 0, 0, 0, 0, 0);
+			var cursor:int = 0;
+			var chunks:Array = pattern.concat().split(DATE_FORMAT_ENTRIES);
+			
+			for (var i:int = 0; i < chunks.length; i++) {
+				var chunk:String = chunks[i];
+				switch (chunk.charAt(0)) {
+					case "y":
+						if (chunk.length == 2)
+							result.fullYear = new Number("19" + value.substr(cursor, chunk.length));
+						else
+							result.fullYear = new Number(value.substr(cursor, chunk.length));
+						break;
+					
+					case "M":
+						result.month = new Number(value.substr(cursor, chunk.length)) - 1;
+						break;
+					
+					case "d":
+						result.date = new Number(value.substr(cursor, chunk.length));
+						break;
+						
+					case "H":
+						result.hours = new Number(value.substr(cursor, chunk.length));
+						break;
+						
+					case "m":
+						result.minutes = new Number(value.substr(cursor, chunk.length));
+						break;
+						
+					case "s":
+						result.seconds = new Number(value.substr(cursor, chunk.length));
+						break;
+						
+					case "S":
+						result.milliseconds = new Number(value.substr(cursor, chunk.length));
+						break;
+				}
+				
+				cursor += chunk.length;
+			}
+			
+			
+			return result;
+		}
+		
 		internal function getYear(value:Date, size:int):String {
 			var result:String = value.fullYear.toString();
 			
