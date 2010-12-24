@@ -1,0 +1,22 @@
+Significant Logical Problems Facing Logback
+===========================================
+
+##1. [SLF4FP] Swapping out logging frameworks at runtime.##
+    org.slf4j.LoggerFactory.setLoggerFactory(value:LoggerFactory)
+
+Provides a way to change out logger factories at runtime. Major problems here. If this method is called after loggers have been created, there needs to be a way to "pass" existing loggers from the old logger to the new one. Use case:
+
+    LoggerFactory.setLoggerFactory(new FlexNativeLoggerFactory());
+    var logger:Logger = LoggerFactory.getLogger("org.ogre.Max");
+    LoggerFactory.setLoggerFactory(new NoOpLoggerFactory());
+
+In the above use case, line 1 sets the logger factory, line 2 gets a logger from the factory, then line 3 changes the logger factory, essentially "stranding" the `logger` variable. The variable still points to a `Logger` that "belongs" to the first logger factory.
+
+**Solution 1: Instruct users that they _really should_ use this method in a static block and only once.**
+
+##2. [Logback-Classic] Allowing users to swap out logback-classic loggers at runtime effectively.##
+
+Same general problem as above, with the exception of working inside Logback Classic. Users should be able to basically leverage the many APIs that Logback Classic provides, yet still create their own `Logger` implementations and `LoggerFactory` implementations.
+
+**Solution 1: Create two main Logback-Classic `LoggerFactory` types to streamline this.**
+First type will be immutable/unswappable: `LogbackClassicLoggerFactory`. Second will be configurable dynamically: `DynamicLogbackClassicLoggerFactory`. The dynamic version will serve as a proxy for an internal logger factory and will accept a logger factory instance as a constructor argument and via a getter/setter. When internal logger factories are changed, this type will grab the current logger factory's `Context` and inject it into the new one, also giving it a reference to a list of `LoggerProxy` instances for wicked hotswapping control. 
