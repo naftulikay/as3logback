@@ -5,7 +5,7 @@ package ch.qos.logback.core {
 	/**
 	 * @author TK Kocheran <a href="mailto:rfkrocktk@gmail.com">&lt;rfkrocktk@gmail.com&gt;</a>
 	 */
-	public class AbstractContext extends EventDispatcher implements Context {
+	public class AbstractLoggerContext extends EventDispatcher implements LoggerContext {
 		
 		private var objects:Object = {};
 		
@@ -13,11 +13,11 @@ package ch.qos.logback.core {
 		
 		private var createdTime:Date;
 		
-		public function AbstractContext() {
+		public function AbstractLoggerContext() {
 			this.createdTime = new Date();
 		}
 		
-		public function configure(value:ContextConfigurator):Context {
+		public function configure(value:LoggerContextConfigurator):LoggerContext {
 			throw new IllegalOperationError("Subclasses must override this method!");
 		}
 		
@@ -25,18 +25,26 @@ package ch.qos.logback.core {
 			return objects[name];
 		}
 
-		public function putObject(name:String, value:Object) : Context {
+		public function putObject(name:String, value:Object) : LoggerContext {
 			objects[name] = value;
 			return this;
+		}
+		
+		public function hasObject(name:String):Boolean {
+			return this.objects[name] != undefined;
 		}
 
 		public function getProperty(key:String) : String {
 			return properties[key];
 		}
 
-		public function setProperty(key:String, value:Object) : Context {
+		public function setProperty(key:String, value:Object) : LoggerContext {
 			properties[key] = value;
 			return this;
+		}
+		
+		public function hasProperty(key:String):Boolean {
+			return this.properties[key] != undefined;
 		}
 
 		public function getCreationTime() : Date {
